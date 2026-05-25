@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sharon's Programme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF7F2;--deep:#1A1510;--bark:#3D2E1E;
+  --moss:#3A5040;--moss-light:#EBF1EC;
+  --clay:#C4603A;--clay-light:#FAF0EB;
+  --gold:#B8903A;--gold-light:#FBF5E8;
+  --sand:#D4B896;--sand-light:#FAF4EC;
+  --purple:#7C55A8;--purple-light:#F0EBF8;
+  --danger:#C0392B;--danger-bg:#FDEDEB;
+  --amber:#9A6E1A;--amber-bg:#FDF5E3;
+  --border:rgba(61,46,30,0.11);--border-strong:rgba(61,46,30,0.22);
+  --shadow:0 1px 8px rgba(26,21,16,0.07);--shadow-lg:0 4px 20px rgba(26,21,16,0.11);
+  --radius:12px;--radius-sm:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cream);color:var(--deep);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
+
+/* NAV TABS */
+.nav-tabs{display:flex;background:var(--bark);padding:0 16px;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav-tab{padding:12px 14px;font-size:12px;font-weight:600;color:rgba(250,247,242,0.55);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .18s;letter-spacing:.02em}
+.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* HEADER */
+.hdr{background:var(--bark);padding:20px 18px 16px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;bottom:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:rgba(184,144,58,0.13);pointer-events:none}
+.hdr-title{font-family:'DM Serif Display',serif;font-size:24px;color:var(--cream);line-height:1.15}
+.hdr-title em{color:var(--gold);font-style:italic}
+.phase-pill{background:var(--gold);color:var(--bark);font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 10px;border-radius:20px;display:inline-block;margin-top:6px}
+
+/* PAGES */
+.page{display:none;padding-bottom:40px}
+.page.active{display:block}
+.sec-title{font-family:'DM Serif Display',serif;font-size:19px;color:var(--bark);padding:16px 16px 6px}
+
+/* WEEK NAV */
+.week-nav{display:flex;align-items:center;gap:7px;padding:4px 16px 12px}
+.wk-lbl{font-size:12px;color:rgba(61,46,30,0.5);font-weight:500}
+.wk-btn{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border-strong);background:white;font-size:13px;font-weight:600;cursor:pointer;color:var(--bark);transition:all .18s;display:flex;align-items:center;justify-content:center}
+.wk-btn.active{background:var(--bark);color:var(--cream);border-color:var(--bark)}
+.wk-focus{font-size:11px;color:rgba(61,46,30,0.45);font-style:italic;margin-left:2px}
+
+/* SESSION HEADER */
+.sess-info{padding:0 16px 12px}
+.sess-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.meta-badge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px}
+.meta-time{background:var(--moss-light);color:var(--moss)}
+.meta-rpe{background:var(--clay-light);color:var(--clay)}
+.meta-days{background:var(--sand-light);color:var(--bark)}
+
+/* BLOCK */
+.blk{padding:0 16px;margin-bottom:14px}
+.blk-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(61,46,30,0.4);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+
+/* SUPERSET PAIR */
+.pair-wrap{border:1.5px solid var(--moss);border-radius:var(--radius);padding:10px 10px 4px;margin-bottom:10px;background:rgba(58,80,64,0.03)}
+.pair-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:white;background:var(--moss);padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:6px}
+.pair-note{font-size:11px;color:var(--moss);font-style:italic;margin-bottom:8px;display:none}
+.pair-note.show{display:block}
+
+/* EXERCISE CARD */
+.ex-card{background:white;border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:7px;box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .18s}
+.ex-card.done{border-color:var(--moss);background:#FAFDF9}
+.ex-hdr{display:flex;align-items:center;gap:9px;padding:10px 13px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ex-num{width:24px;height:24px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--bark);color:white;transition:background .2s}
+.ex-num.done{background:var(--moss)}
+.ex-num.w{background:var(--moss)}
+.ex-num.c{background:var(--sand);color:var(--bark)}
+.ex-name{font-size:13px;font-weight:600;flex:1;color:var(--bark)}
+.ex-badge{font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;background:var(--sand-light);color:var(--bark);margin-right:4px;white-space:nowrap}
+.chevron{font-size:11px;color:rgba(61,46,30,0.3);transition:transform .22s;flex-shrink:0}
+.chevron.open{transform:rotate(180deg)}
+.ex-body{display:none;padding:0 13px 13px;border-top:1px solid var(--border)}
+.ex-body.open{display:block}
+
+/* FIELDS */
+.field{margin-top:10px}
+.field-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:rgba(61,46,30,0.4);margin-bottom:5px}
+.bullets{list-style:none}
+.bullets li{font-size:12px;color:rgba(61,46,30,0.72);line-height:1.65;padding:2px 0 2px 14px;position:relative}
+.bullets li::before{content:'·';position:absolute;left:0;color:var(--bark);font-weight:700;font-size:14px;line-height:1.3}
+
+.cue-box{background:var(--moss-light);border-left:3px solid var(--moss);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:8px 11px;margin-top:8px;font-size:12px;color:var(--moss);line-height:1.6}
+.cue-box strong{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--moss);margin-bottom:2px}
+.pf-box{background:var(--purple-light);border-left:3px solid var(--purple);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:8px 11px;margin-top:8px;font-size:12px;color:#4A2875;line-height:1.6}
+.pf-box strong{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--purple);margin-bottom:2px}
+.flags{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.flag{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:500;padding:3px 8px;border-radius:20px}
+.flag-r{background:var(--danger-bg);color:var(--danger)}
+.flag-a{background:var(--amber-bg);color:var(--amber)}
+.flag-g{background:var(--moss-light);color:var(--moss)}
+.muscles{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.muscle-tag{font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;background:var(--sand-light);color:var(--bark);border:1px solid rgba(212,184,150,0.3)}
+.trans-note{font-size:11px;color:rgba(61,46,30,0.45);font-style:italic;margin-top:7px;padding-top:7px;border-top:1px dashed var(--border)}
+
+/* PROGRESS TRACKER inside exercise */
+.ex-log{background:var(--cream);border-radius:var(--radius-sm);padding:10px 12px;margin-top:10px;border:1px solid var(--border)}
+.ex-log-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:rgba(61,46,30,0.4);margin-bottom:8px}
+.log-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.log-input{flex:1;border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--deep);background:white;width:100%}
+.log-label{font-size:11px;color:rgba(61,46,30,0.55);width:52px;flex-shrink:0}
+.log-notes{width:100%;border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--deep);background:white;resize:none;min-height:44px}
+.done-btn{display:flex;align-items:center;gap:6px;margin-top:8px;padding:7px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border-strong);background:white;font-size:12px;font-weight:600;cursor:pointer;color:var(--bark);transition:all .18s;width:100%;justify-content:center}
+.done-btn.completed{background:var(--moss);border-color:var(--moss);color:white}
+.done-btn .tick{font-size:14px}
+
+/* CORE PROGRESSION */
+.core-card{background:var(--clay-light);border:1px solid rgba(196,96,58,0.2);border-radius:var(--radius);margin:0 16px 12px;overflow:hidden}
+.core-hdr{background:var(--clay);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.core-hdr h3{font-family:'DM Serif Display',serif;font-size:15px;color:white}
+.lev-tabs{display:flex;gap:5px}
+.lev-btn{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,255,255,0.3);background:transparent;color:rgba(255,255,255,0.65);cursor:pointer;transition:all .18s}
+.lev-btn.active{background:white;color:var(--clay);border-color:white}
+.core-lev{display:none;padding:12px 16px}
+.core-lev.active{display:block}
+.core-lev-name{font-size:13px;font-weight:600;color:var(--bark);margin-bottom:2px}
+.core-lev-when{font-size:11px;color:var(--clay);font-weight:500;margin-bottom:8px}
+.core-field{margin-bottom:10px}
+.core-field-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:rgba(61,46,30,0.4);margin-bottom:5px}
+.core-bullets{list-style:none}
+.core-bullets li{font-size:12px;color:rgba(61,46,30,0.72);line-height:1.65;padding:2px 0 2px 14px;position:relative}
+.core-bullets li::before{content:'·';position:absolute;left:0;color:var(--clay);font-weight:700;font-size:14px;line-height:1.3}
+.core-pf{background:var(--purple-light);border-left:3px solid var(--purple);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:8px 11px;font-size:12px;color:#4A2875;line-height:1.6}
+.core-pf strong{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--purple);margin-bottom:2px}
+
+/* WRIST PROTOCOL */
+.wrist-card{background:var(--gold-light);border:1px solid rgba(184,144,58,0.25);border-radius:var(--radius);margin:0 16px 12px;padding:14px 16px}
+.wrist-title{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.wrist-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.wrist-step{background:white;border-radius:var(--radius-sm);padding:8px 10px;font-size:12px;color:var(--bark);line-height:1.5;border:1px solid rgba(184,144,58,0.15)}
+.wrist-step strong{display:block;font-size:11px;color:var(--gold);font-weight:600;margin-bottom:2px}
+
+/* DAILY PROTOCOL */
+.daily-card{background:var(--purple-light);border:1px solid rgba(124,85,168,0.2);border-radius:var(--radius);margin:0 16px 12px;overflow:hidden}
+.daily-hdr{background:var(--purple);padding:11px 16px}
+.daily-hdr h3{font-family:'DM Serif Display',serif;font-size:15px;color:white}
+.daily-hdr p{font-size:11px;color:rgba(255,255,255,0.72);margin-top:2px}
+.daily-body{padding:12px 16px}
+.daily-ex{background:white;border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:8px;border:1px solid rgba(124,85,168,0.12)}
+.daily-ex:last-child{margin-bottom:0}
+.daily-ex-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.daily-ex-name{font-size:13px;font-weight:600;color:var(--bark)}
+.daily-ex-sets{font-size:11px;color:var(--purple);font-weight:500}
+.daily-ex-desc{font-size:12px;color:rgba(61,46,30,0.65);line-height:1.55}
+
+/* PROG NOTE */
+.prog-note{background:var(--sand-light);border:1px solid rgba(212,184,150,0.35);border-radius:var(--radius-sm);padding:10px 13px;font-size:12px;color:var(--bark);line-height:1.7;margin:0 16px 16px}
+.prog-note strong{font-weight:600}
+
+/* ---- PROGRESS PAGE ---- */
+.progress-page{padding:0 16px 40px}
+.prog-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;margin-top:8px}
+.prog-stat{background:white;border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;text-align:center;box-shadow:var(--shadow)}
+.prog-stat-num{font-family:'DM Serif Display',serif;font-size:26px;color:var(--bark);display:block}
+.prog-stat-lbl{font-size:10px;color:rgba(61,46,30,0.5);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.prog-stat-sub{font-size:10px;color:var(--moss);margin-top:2px}
+
+.metric-card{background:white;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow)}
+.metric-hdr{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.metric-hdr h4{font-size:13px;font-weight:600;color:var(--bark)}
+.metric-hdr span{font-size:11px;color:rgba(61,46,30,0.45)}
+.metric-body{padding:12px 14px}
+
+/* CHART */
+.chart-wrap{position:relative;height:120px;margin-top:8px}
+canvas.chart{width:100%!important;height:120px!important}
+
+/* LOG ENTRIES */
+.log-entry{background:var(--cream);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:6px;border:1px solid var(--border)}
+.log-entry-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.log-entry-date{font-size:11px;font-weight:600;color:var(--bark)}
+.log-entry-wk{font-size:10px;color:rgba(61,46,30,0.4);background:var(--sand-light);padding:2px 7px;border-radius:20px}
+.log-entry-body{font-size:12px;color:rgba(61,46,30,0.65);line-height:1.55}
+.log-entry-exes{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.log-ex-pill{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500}
+.log-ex-done{background:var(--moss-light);color:var(--moss)}
+.log-ex-skip{background:var(--danger-bg);color:var(--danger)}
+
+.input-row{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+.input-row label{font-size:12px;color:var(--bark);font-weight:500;width:110px;flex-shrink:0}
+.input-row input{flex:1;border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:12px;font-family:'DM Sans',sans-serif;background:white;color:var(--deep)}
+.save-metric-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;background:var(--bark);color:var(--cream);border:none;border-radius:var(--radius-sm);font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .18s}
+.save-metric-btn:hover{opacity:.88}
+.clear-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;background:var(--danger-bg);color:var(--danger);border:1px solid rgba(192,57,43,0.2);border-radius:var(--radius-sm);font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-left:8px}
+
+/* SESSION LOG */
+.session-log-form{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.session-log-form h4{font-size:13px;font-weight:600;color:var(--bark);margin-bottom:10px}
+.form-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.form-field{display:flex;flex-direction:column;gap:3px;flex:1;min-width:100px}
+.form-field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:rgba(61,46,30,0.4)}
+.form-field input,.form-field select,.form-field textarea{border:1px solid var(--border);border-radius:6px;padding:7px 9px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--deep);width:100%}
+.form-field textarea{resize:none;min-height:60px}
+
+/* NUTRITION */
+.nut-card{background:white;border:1px solid var(--border);border-radius:var(--radius);margin:0 16px 12px;overflow:hidden;box-shadow:var(--shadow)}
+.nut-hdr{background:var(--bark);padding:12px 16px}
+.nut-hdr h3{font-family:'DM Serif Display',serif;color:var(--cream);font-size:17px}
+.nut-hdr p{font-size:11px;color:rgba(250,247,242,0.6);margin-top:2px}
+.nut-body{padding:14px 16px}
+.macro-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.macro{background:var(--cream);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;border:1px solid var(--border)}
+.macro-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--bark);display:block}
+.macro-lbl{font-size:10px;color:rgba(61,46,30,0.5);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.macro-sub{font-size:10px;color:var(--clay);margin-top:2px}
+.nut-item{font-size:12px;color:rgba(61,46,30,0.75);line-height:1.65;padding:7px 0 7px 16px;border-bottom:1px solid var(--border);position:relative}
+.nut-item:last-child{border-bottom:none}
+.nut-item::before{content:'→';position:absolute;left:0;color:var(--moss);font-weight:600}
+.nut-item strong{color:var(--bark);font-weight:600}
+
+/* SAFETY */
+.safety-banner{background:var(--danger-bg);border:1px solid rgba(192,57,43,0.2);border-radius:var(--radius);margin:14px 16px 12px;padding:13px 15px}
+.safety-title{font-size:11px;font-weight:700;color:var(--danger);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+.safety-row{font-size:12px;color:#7A2318;line-height:1.65;padding:2px 0 2px 16px;position:relative}
+.safety-row::before{content:'→';position:absolute;left:0;color:var(--danger);font-weight:600}
+
+.empty-state{text-align:center;padding:30px 20px;color:rgba(61,46,30,0.4);font-size:13px}
+.empty-state .icon{font-size:32px;display:block;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-title">Sharon's <em>Programme</em></div>
+  <span class="phase-pill">Phase 1 · Weeks 1–4</span>
+</div>
+
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="showPage('programme')">Programme</div>
+  <div class="nav-tab" onclick="showPage('daily')">Daily Protocol</div>
+  <div class="nav-tab" onclick="showPage('progress')">Progress</div>
+  <div class="nav-tab" onclick="showPage('nutrition')">Nutrition</div>
+</div>
+
+<!-- =================== PROGRAMME PAGE =================== -->
+<div class="page active" id="page-programme">
+
+  <div class="safety-banner">
+    <div class="safety-title">⚠ Safety — every session</div>
+    <div class="safety-row">Dizziness at any point → sit on the floor immediately. Wait until fully clear.</div>
+    <div class="safety-row">RPE 4–6 only. Must be able to speak in short sentences throughout.</div>
+    <div class="safety-row">Statin watch: unusual muscle aching beyond normal DOMS → flag to GP immediately.</div>
+  </div>
+
+  <div class="sec-title">🖐 Wrist protocol — 2 min opener</div>
+  <div class="wrist-card">
+    <div class="wrist-title">Do this before anything else, every session</div>
+    <div class="wrist-grid">
+      <div class="wrist-step"><strong>1 — Wrist circles</strong>10 reps each direction, both hands. Slow, full range.</div>
+      <div class="wrist-step"><strong>2 — Flex & extend</strong>Full range flexion and extension. 10 reps each hand.</div>
+      <div class="wrist-step"><strong>3 — Prayer stretch</strong>Palms together, slowly lower hands. Hold 15 sec.</div>
+      <div class="wrist-step"><strong>4 — Reverse prayer</strong>Backs of hands together, raise slowly. Hold 10 sec. Skip if pain.</div>
+      <div class="wrist-step"><strong>5 — Finger spread & squeeze</strong>Spread wide 2 sec, squeeze to fist 2 sec. 5 reps each hand.</div>
+      <div class="wrist-step" style="background:var(--danger-bg);border-color:rgba(192,57,43,0.2)"><strong style="color:var(--danger)">Right wrist — monitor</strong>Clicking noted. Pain during any step → stop and note it.</div>
+    </div>
+  </div>
+
+  <div class="sec-title">Core engagement progression</div>
+  <div class="core-card">
+    <div class="core-hdr">
+      <div>
+        <h3 id="core-title">Level 1 — Dead-bug hold</h3>
+        <p id="core-when" style="font-size:11px;color:rgba(255,255,255,0.72);margin-top:2px">Week 1 · Brace only · No movement</p>
+      </div>
+      <div class="lev-tabs">
+        <button class="lev-btn active" onclick="setLev(1,this)">L1</button>
+        <button class="lev-btn" onclick="setLev(2,this)">L2</button>
+        <button class="lev-btn" onclick="setLev(3,this)">L3</button>
+        <button class="lev-btn" onclick="setLev(4,this)">L4</button>
+      </div>
+    </div>
+    <div class="core-lev active" id="lev1">
+      <div class="core-lev-name">Dead-bug hold — brace only</div>
+      <div class="core-lev-when">Week 1 · 5 × 5 sec holds</div>
+      <div class="core-field"><div class="core-field-lbl">Instructions</div>
+        <ul class="core-bullets">
+          <li>Lie on mat, knees bent at 90°, shins parallel to floor</li>
+          <li>Arms pointing straight up to the ceiling</li>
+          <li>No movement — this is a hold only</li>
+          <li>Hold 5 sec, release fully, rest 5 sec. Repeat 5 times</li>
+        </ul>
+      </div>
+      <div class="core-field"><div class="core-field-lbl">Bracing & breathing</div>
+        <ul class="core-bullets">
+          <li>Breathe in through nose — feel ribcage expand front, sides and back</li>
+          <li>Hold air and brace 360° as if about to be poked in the stomach</li>
+          <li>Hold 5 seconds — keep the brace the whole time</li>
+          <li>Release everything fully before the next rep</li>
+        </ul>
+      </div>
+      <div class="core-pf"><strong>Coaching cue</strong>"Push outward slightly then squeeze all the way around — front, sides and back" · "Don't suck your belly in — brace outward then tight"</div>
+    </div>
+    <div class="core-lev" id="lev2">
+      <div class="core-lev-name">Dead-bug hold + pelvic floor</div>
+      <div class="core-lev-when">Week 2 · 5 × 5 sec holds · Only when Level 1 brace is consistent</div>
+      <div class="core-field"><div class="core-field-lbl">Instructions</div>
+        <ul class="core-bullets">
+          <li>Same position as Level 1 — add pelvic floor lift before every brace</li>
+          <li>Hold 5 seconds, release fully, rest 5 seconds. Repeat 5 times</li>
+        </ul>
+      </div>
+      <div class="core-field"><div class="core-field-lbl">Bracing & breathing</div>
+        <ul class="core-bullets">
+          <li>Lift pelvic floor gently — as if stopping the flow of urine</li>
+          <li>Breathe in through nose → brace 360°</li>
+          <li>Hold 5 seconds — PF and brace both held</li>
+          <li>Release everything fully — PF first, then brace</li>
+        </ul>
+      </div>
+      <div class="core-pf"><strong>Coaching cue</strong>"Lift, breathe, brace — in that order, every time" · "Release everything completely between reps"</div>
+    </div>
+    <div class="core-lev" id="lev3">
+      <div class="core-lev-name">Dead-bug — arm and leg extension</div>
+      <div class="core-lev-when">Week 2–3 · 3 × 6 each side · Only when Level 2 is owned</div>
+      <div class="core-field"><div class="core-field-lbl">Instructions</div>
+        <ul class="core-bullets">
+          <li>Hold Swiss ball between both hands and knees</li>
+          <li>Slowly extend one arm overhead and opposite leg toward floor</li>
+          <li>Lower back stays pressed into mat throughout — this is the only rule that matters</li>
+          <li>Return to start, switch sides</li>
+        </ul>
+      </div>
+      <div class="core-field"><div class="core-field-lbl">Bracing & breathing</div>
+        <ul class="core-bullets">
+          <li>PF lift → breathe in → brace 360° before you move</li>
+          <li>Extend arm and leg as you exhale slowly</li>
+          <li>Keep brace through full extension and return</li>
+        </ul>
+      </div>
+      <div class="core-pf"><strong>Coaching cue</strong>"If your lower back lifts — you've gone too far. Make the movement smaller" · "Move slowly — speed is the enemy here"</div>
+    </div>
+    <div class="core-lev" id="lev4">
+      <div class="core-lev-name">McGill modified curl-up</div>
+      <div class="core-lev-when">Week 3–4 · 3 × 8 → 3 × 10 · Only when Level 3 is owned</div>
+      <div class="core-field"><div class="core-field-lbl">Instructions</div>
+        <ul class="core-bullets">
+          <li>Hand under lumbar spine — natural curve stays here throughout</li>
+          <li>Other arm flat, tuck chin gently toward chest</li>
+          <li>Lift only head and shoulders — stop before lower back would flatten</li>
+          <li>2 sec up, 1 sec hold, 2 sec down</li>
+        </ul>
+      </div>
+      <div class="core-field"><div class="core-field-lbl">Bracing & breathing</div>
+        <ul class="core-bullets">
+          <li>PF lift → breathe in → brace 360°</li>
+          <li>Lift as you exhale slowly, hold 1 sec at top</li>
+          <li>Lower as you breathe in, reset brace before next rep</li>
+        </ul>
+      </div>
+      <div class="core-pf"><strong>Coaching cue</strong>"The hand under your back protects the curve — if you feel it flatten, you've gone too far" · "Brace before you lift — every single rep"</div>
+    </div>
+  </div>
+
+  <!-- WEEK SELECTOR -->
+  <div class="week-nav" style="margin-top:8px">
+    <span class="wk-lbl">Week:</span>
+    <button class="wk-btn active" onclick="setWeek(1,this)">1</button>
+    <button class="wk-btn" onclick="setWeek(2,this)">2</button>
+    <button class="wk-btn" onclick="setWeek(3,this)">3</button>
+    <button class="wk-btn" onclick="setWeek(4,this)">4</button>
+    <span class="wk-focus" id="wk-lbl">Straight sets · learn every movement</span>
+  </div>
+
+  <div class="sess-info">
+    <div style="font-family:'DM Serif Display',serif;font-size:19px;color:var(--bark)">Thursday &amp; Saturday</div>
+    <div style="font-size:12px;color:rgba(61,46,30,0.55);margin-top:2px">Same session both days · Weeks 1–4</div>
+    <div class="sess-meta">
+      <span class="meta-badge meta-time">⏱ 35–40 min</span>
+      <span class="meta-badge meta-rpe">RPE 4–6</span>
+      <span class="meta-badge meta-days">Thu · Sat</span>
+    </div>
+  </div>
+
+  <!-- WARM-UP -->
+  <div class="blk">
+    <div class="blk-lbl">Warm-up — 5 min</div>
+    <div class="ex-card" id="card-bike">
+      <div class="ex-hdr" onclick="tog('bike')">
+        <div class="ex-num w" id="num-bike">W</div>
+        <div class="ex-name">Bike — easy pedal</div>
+        <div class="ex-badge">5 min</div>
+        <div class="chevron" id="chev-bike">▼</div>
+      </div>
+      <div class="ex-body" id="body-bike">
+        <div class="field"><div class="field-lbl">Instructions</div>
+          <ul class="bullets"><li>Low resistance, comfortable pace</li><li>Warm but not breathless by the end</li><li>Saturday: note any soreness from Thursday</li></ul>
+        </div>
+        <div class="muscles"><span class="muscle-tag">Quadriceps</span><span class="muscle-tag">Hamstrings</span><span class="muscle-tag">Cardiovascular</span></div>
+        <div class="ex-log">
+          <div class="ex-log-title">Log this exercise</div>
+          <div class="log-row"><span class="log-label">Duration</span><input class="log-input" type="text" placeholder="e.g. 5 min" id="log-bike-dur"></div>
+          <textarea class="log-notes" placeholder="Notes..." id="log-bike-notes" rows="2"></textarea>
+          <button class="done-btn" id="btn-bike" onclick="markDone('bike')"><span class="tick">○</span> Mark done</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ex-card" id="card-ankle">
+      <div class="ex-hdr" onclick="tog('ankle')">
+        <div class="ex-num w" id="num-ankle">W</div>
+        <div class="ex-name">Ankle circles + calf stretch</div>
+        <div class="ex-badge">2 min</div>
+        <div class="chevron" id="chev-ankle">▼</div>
+      </div>
+      <div class="ex-body" id="body-ankle">
+        <div class="field"><div class="field-lbl">Instructions</div>
+          <ul class="bullets"><li>Seated ankle circles — 10 each direction, both feet</li><li>Stand facing wall, one hand on wall</li><li>Straight leg behind, heel flat — hold 20 sec each leg</li></ul>
+        </div>
+        <div class="flags"><span class="flag flag-a">Plantar fasciitis — training shoes on before any standing work</span></div>
+        <div class="muscles"><span class="muscle-tag">Gastrocnemius</span><span class="muscle-tag">Soleus</span><span class="muscle-tag">Ankle mobility</span></div>
+        <div class="ex-log">
+          <div class="ex-log-title">Log this exercise</div>
+          <textarea class="log-notes" placeholder="Notes..." id="log-ankle-notes" rows="2"></textarea>
+          <button class="done-btn" id="btn-ankle" onclick="markDone('ankle')"><span class="tick">○</span> Mark done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAIR A -->
+  <div class="blk">
+    <div class="blk-lbl">Main work</div>
+    <div class="pair-wrap">
+      <span class="pair-lbl">Pair A — floor</span>
+      <div class="pair-note" id="note-a">Week 2+: glute bridge set → rest 30 sec → dead bug set → rest 60 sec → repeat</div>
+
+      <div class="ex-card" id="card-glute">
+        <div class="ex-hdr" onclick="tog('glute')">
+          <div class="ex-num" id="num-glute">1</div>
+          <div class="ex-name">Glute bridge</div>
+          <div class="ex-badge" id="sets-glute">2 × 10</div>
+          <div class="chevron" id="chev-glute">▼</div>
+        </div>
+        <div class="ex-body" id="body-glute">
+          <div class="field"><div class="field-lbl">Instructions</div>
+            <ul class="bullets"><li>Lie on mat, knees bent, feet flat, hip-width apart</li><li>Drive hips toward ceiling squeezing glutes — not lower back</li><li>Hold 2 sec at top, lower with control</li><li>Weeks 3–4: soft ball between knees</li></ul>
+          </div>
+          <div class="field"><div class="field-lbl">Bracing & breathing</div>
+            <ul class="bullets"><li>PF lift → breathe in → brace 360°</li><li>Push hips up as you exhale slowly</li><li>Keep brace as air leaves — brace and breath are separate</li><li>Breathe in at top, lower with control, release brace fully at bottom</li></ul>
+          </div>
+          <div class="cue-box"><strong>Coaching cues</strong>"Squeeze your glutes — not your back" · "Keep the brace as the air leaves"</div>
+          <div class="flags"><span class="flag flag-g">Directly addresses anterior pelvic tilt</span></div>
+          <div class="trans-note">Position transition after: roll to side → sit → pause 5 sec → stand → pause 5 sec</div>
+          <div class="muscles"><span class="muscle-tag">Gluteus maximus</span><span class="muscle-tag">Hamstrings</span></div>
+          <div class="ex-log">
+            <div class="ex-log-title">Log this exercise</div>
+            <div class="log-row"><span class="log-label">Sets done</span><input class="log-input" type="number" placeholder="3" id="log-glute-sets"></div>
+            <div class="log-row"><span class="log-label">Reps done</span><input class="log-input" type="text" placeholder="10" id="log-glute-reps"></div>
+            <textarea class="log-notes" placeholder="Notes, how it felt..." id="log-glute-notes" rows="2"></textarea>
+            <button class="done-btn" id="btn-glute" onclick="markDone('glute')"><span class="tick">○</span> Mark done</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-card" id="card-deadbug">
+        <div class="ex-hdr" onclick="tog('deadbug')">
+          <div class="ex-num" id="num-deadbug">2</div>
+          <div class="ex-name">Dead bug (core activation)</div>
+          <div class="ex-badge" id="sets-deadbug">See above</div>
+          <div class="chevron" id="chev-deadbug">▼</div>
+        </div>
+        <div class="ex-body" id="body-deadbug">
+          <div class="field"><div class="field-lbl">Instructions</div>
+            <ul class="bullets"><li>Follow the core progression level for the current week</li><li>Level 1–2: dead-bug hold — see core progression above</li><li>Level 3: extension with Swiss ball</li><li>Level 4: McGill modified curl-up</li></ul>
+          </div>
+          <div class="flags"><span class="flag flag-a">Never progress level until current level is fully owned</span></div>
+          <div class="muscles"><span class="muscle-tag">Transverse abdominis</span><span class="muscle-tag">Multifidus</span><span class="muscle-tag">Pelvic floor</span></div>
+          <div class="ex-log">
+            <div class="ex-log-title">Log this exercise</div>
+            <div class="log-row"><span class="log-label">Level used</span><input class="log-input" type="text" placeholder="e.g. L2" id="log-db-level"></div>
+            <textarea class="log-notes" placeholder="Notes..." id="log-db-notes" rows="2"></textarea>
+            <button class="done-btn" id="btn-deadbug" onclick="markDone('deadbug')"><span class="tick">○</span> Mark done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAIR B -->
+    <div class="pair-wrap">
+      <span class="pair-lbl">Pair B — push + pull</span>
+      <div class="pair-note" id="note-b">Week 2+: push-up set → transition to floor → row set → rest 60 sec → repeat</div>
+
+      <div class="ex-card" id="card-pushup">
+        <div class="ex-hdr" onclick="tog('pushup')">
+          <div class="ex-num" id="num-pushup">3</div>
+          <div class="ex-name">Wall push-up</div>
+          <div class="ex-badge" id="sets-pushup">Stage 1 · 2 × 20</div>
+          <div class="chevron" id="chev-pushup">▼</div>
+        </div>
+        <div class="ex-body" id="body-pushup">
+          <div class="field"><div class="field-lbl">Instructions</div>
+            <ul class="bullets"><li>Stand facing wall, hands at shoulder height and width, palms flat</li><li>Feet stepped back until slight lean into wall — further = harder</li><li>Body in straight line head to heels</li><li>Lower chest toward wall 2 sec, brief pause, push back</li></ul>
+          </div>
+          <div class="field"><div class="field-lbl">Progression stages</div>
+            <ul class="bullets"><li>Stage 1: 2 × 20 — learn the movement and bracing</li><li>Stage 2: 3 × 20 — third set only when all 20 reps are clean</li><li>Stage 3: 2 × 30 — feet slightly further from wall</li><li>Stage 4: 2 × 50 — brace holding for full set is the real test</li><li>Stage 5: incline push-up from bench — Phase 2</li></ul>
+          </div>
+          <div class="field"><div class="field-lbl">Bracing & breathing</div>
+            <ul class="bullets"><li>Breathe in at start, brace 360° all the way around</li><li>Lower slowly — keep brace on the way down</li><li>Push away as you exhale slowly through pursed lips</li><li>Brace does not release just because the air does</li></ul>
+          </div>
+          <div class="cue-box"><strong>Coaching cues</strong>"Breathe in, brace all the way around, lower slowly, push away as the air leaves" · "The trunk stays stiff the whole way"</div>
+          <div class="flags"><span class="flag flag-a">Right wrist: monitor every set. Pain → stop, switch to fists on mat</span></div>
+          <div class="muscles"><span class="muscle-tag">Pectorals</span><span class="muscle-tag">Anterior deltoid</span><span class="muscle-tag">Triceps</span></div>
+          <div class="ex-log">
+            <div class="ex-log-title">Log this exercise</div>
+            <div class="log-row"><span class="log-label">Stage</span><input class="log-input" type="text" placeholder="e.g. Stage 1" id="log-pu-stage"></div>
+            <div class="log-row"><span class="log-label">Sets × Reps</span><input class="log-input" type="text" placeholder="e.g. 2 × 20" id="log-pu-sets"></div>
+            <textarea class="log-notes" placeholder="Notes..." id="log-pu-notes" rows="2"></textarea>
+            <button class="done-btn" id="btn-pushup" onclick="markDone('pushup')"><span class="tick">○</span> Mark done</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-card" id="card-row">
+        <div class="ex-hdr" onclick="tog('row')">
+          <div class="ex-num" id="num-row">4</div>
+          <div class="ex-name">Seated band row (floor)</div>
+          <div class="ex-badge" id="sets-row">2 × 10</div>
+          <div class="chevron" id="chev-row">▼</div>
+        </div>
+        <div class="ex-body" id="body-row">
+          <div class="field"><div class="field-lbl">Instructions</div>
+            <ul class="bullets"><li>Sit on mat with legs extended in front</li><li>Loop blue long band around both feet, one end in each hand</li><li>Sit tall with slight natural lean back — not collapsed, not rigid</li><li>Pull both elbows back simultaneously, driving past the hips</li><li>Squeeze shoulder blades together at end of pull</li><li>Return 2 sec — not a drop</li></ul>
+          </div>
+          <div class="field"><div class="field-lbl">Bracing & breathing</div>
+            <ul class="bullets"><li>Breathe in before the pull, brace 360°</li><li>Pull as you exhale slowly</li><li>Keep brace through full movement and return</li><li>Breathe in at start, reset brace before next rep</li></ul>
+          </div>
+          <div class="cue-box"><strong>Coaching cues</strong>"Sit tall — imagine a string pulling the top of your head to the ceiling" · "Squeeze a pencil between your shoulder blades" · "Shoulders down away from your ears"</div>
+          <div class="muscles"><span class="muscle-tag">Rhomboids</span><span class="muscle-tag">Mid trapezius</span><span class="muscle-tag">Posterior deltoid</span><span class="muscle-tag">Biceps</span></div>
+          <div class="ex-log">
+            <div class="ex-log-title">Log this exercise</div>
+            <div class="log-row"><span class="log-label">Sets done</span><input class="log-input" type="number" placeholder="3" id="log-row-sets"></div>
+            <div class="log-row"><span class="log-label">Reps done</span><input class="log-input" type="text" placeholder="10" id="log-row-reps"></div>
+            <textarea class="log-notes" placeholder="Notes..." id="log-row-notes" rows="2"></textarea>
+            <button class="done-btn" id="btn-row" onclick="markDone('row')"><span class="tick">○</span> Mark done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAIR C -->
+    <div class="pair-wrap">
+      <span class="pair-lbl">Pair C — lower body</span>
+      <div class="pair-note" id="note-c">Week 2+: squat set → rest 30 sec → RDL set → rest 60 sec → repeat</div>
+
+      <div class="ex-card" id="card-squat">
+        <div class="ex-hdr" onclick="tog('squat')">
+          <div class="ex-num" id="num-squat">5</div>
+          <div class="ex-name" id="name-squat">Squat to bench</div>
+          <div class="ex-badge" id="sets-squat">3 × 10 · 3 sec down</div>
+          <div class="chevron" id="chev-squat">▼</div>
+        </div>
+        <div class="ex-body" id="body-squat">
+          <div class="field" id="squat-instructions">
+            <div class="field-lbl">Instructions</div>
+            <ul class="bullets" id="squat-bullets">
+              <li>Place bench directly behind — hips should reach just at or above knee height</li>
+              <li>Stand with heels on 1.75kg plates, feet hip-width, toes slightly out</li>
+              <li>Send hips back first — not knees forward, not chest down</li>
+              <li>Lower for 3 seconds, chest upright, knees tracking over second toe</li>
+              <li>Touch surface lightly — do not sit, do not rest</li>
+              <li>The moment you feel the bench, drive through both heels back up</li>
+              <li>Hips and chest rise at the same rate</li>
+            </ul>
+          </div>
+          <div class="field"><div class="field-lbl">Bracing & breathing</div>
+            <ul class="bullets"><li>PF lift → breathe in → brace 360° before you move</li><li>Keep brace as you lower — 3 sec down</li><li>Touch bench → exhale slowly as you push back up</li><li>Keep brace until fully standing, breathe in, reset, repeat</li></ul>
+          </div>
+          <div class="cue-box"><strong>Coaching cues</strong>"Reach your hips back toward the bench first" · "Just touch it — don't sit. Feel it and push the floor away" · "Drive through your heels all the way up"</div>
+          <div class="flags" id="squat-flags">
+            <span class="flag flag-a">Chest collapsing → cue: "imagine a hand on your sternum keeping you upright"</span>
+            <span class="flag flag-a">Full sit onto surface → raise surface height slightly</span>
+          </div>
+          <div class="muscles"><span class="muscle-tag">Quadriceps</span><span class="muscle-tag">Gluteus maximus</span><span class="muscle-tag">Gluteus medius</span></div>
+          <div class="ex-log">
+            <div class="ex-log-title">Log this exercise</div>
+            <div class="log-row"><span class="log-label">Sets done</span><input class="log-input" type="number" placeholder="3" id="log-sq-sets"></div>
+            <div class="log-row"><span class="log-label">Reps done</span><input class="log-input" type="text" placeholder="10" id="log-sq-reps"></div>
+            <div class="log-row"><span class="log-label">Load</span><input class="log-input" type="text" placeholder="BW / plates" id="log-sq-load"></div>
+            <textarea class="log-notes" placeholder="Notes..." id="log-sq-notes" rows="2"></textarea>
+            <button class="done-btn" id="btn-squat" onclick="markDone('squat')"><span class="tick">○</span> Mark done</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-card" id="card-rdl">
+        <div class="ex-hdr" onclick="tog('rdl')">
+          <div class="ex-num" id="num-rdl">6</div>
+          <div class="ex-name">RDL to box (sandbags)</div>
+          <div class="ex-badge" id="sets-rdl">2 × 8 · 2 sec down</div>
+          <div class="chevron" id="chev-rdl">▼</div>
+        </div>
+        <div class="ex-body" id="body-rdl">
+          <div class="field"><div class="field-lbl">Instructions</div>
+            <ul class="bullets"><li>Stand feet hip-width, 2kg sandbag in each hand on front of thighs</li><li>Soft bend in knees — not a squat, not locked straight</li><li>Send hips back toward wall behind you — this initiates the hinge</li><li>Let sandbags drag down front of thighs as hips travel back</li><li>Lower until weights touch the box — pause 1 sec</li><li>Drive hips forward to return, squeeze glutes at top</li></ul>
+          </div>
+          <div class="field"><div class="field-lbl">Bracing & breathing</div>
+            <ul class="bullets"><li>PF lift → breathe in → brace 360° before you move</li><li>Keep brace as you hinge back — 2 sec down</li><li>Touch box → pause → drive hips forward as you exhale slowly</li><li>Stand tall → breathe in, reset brace before next rep</li></ul>
+          </div>
+          <div class="cue-box"><strong>Coaching cues</strong>"Push the wall behind you with your hips — don't think about bending forward" · "Let the weights drag down your legs" · "Feel the pull in the back of your thighs"</div>
+          <div class="flags">
+            <span class="flag flag-r">Neutral spine non-negotiable — no rounding under load</span>
+            <span class="flag flag-a">Looking down at floor → cue: "soft gaze forward, not down"</span>
+          </div>
+          <div class="muscles"><span class="muscle-tag">Hamstrings</span><span class="muscle-tag">Gluteus maximus</span><span class="muscle-tag">Erector spinae</span></div>
+          <div class="ex-log">
+            <div class="ex-log-title">Log this exercise</div>
+            <div class="log-row"><span class="log-label">Sets done</span><input class="log-input" type="number" placeholder="3" id="log-rdl-sets"></div>
+            <div class="log-row"><span class="log-label">Reps done</span><input class="log-input" type="text" placeholder="8" id="log-rdl-reps"></div>
+            <div class="log-row"><span class="log-label">Load</span><input class="log-input" type="text" placeholder="2×2kg sandbags" id="log-rdl-load"></div>
+            <textarea class="log-notes" placeholder="Notes..." id="log-rdl-notes" rows="2"></textarea>
+            <button class="done-btn" id="btn-rdl" onclick="markDone('rdl')"><span class="tick">○</span> Mark done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP-UP straight set -->
+    <div class="ex-card" id="card-stepup">
+      <div class="ex-hdr" onclick="tog('stepup')">
+        <div class="ex-num" id="num-stepup">7</div>
+        <div class="ex-name">Step-up (1 level · wall support)</div>
+        <div class="ex-badge" id="sets-stepup">2 × 8 each leg</div>
+        <div class="chevron" id="chev-stepup">▼</div>
+      </div>
+      <div class="ex-body" id="body-stepup">
+        <div class="field"><div class="field-lbl">Instructions</div>
+          <ul class="bullets"><li>Stand facing step platform — 1 level only throughout Phase 1</li><li>Light hand contact on wall — balance and strength, not a balance test</li><li>Step up right foot, bring left foot up to meet it</li><li>Step back down right foot first, alternate leading leg each set</li></ul>
+        </div>
+        <div class="field"><div class="field-lbl">Bracing & breathing</div>
+          <ul class="bullets"><li>PF lift → breathe in → brace 360° before stepping up</li><li>Drive leading foot onto step as you exhale slowly</li><li>Keep brace as second foot comes up</li><li>Breathe in as you lower, maintain brace on descent</li><li>Both feet on floor → breathe in, reset brace before next rep</li></ul>
+        </div>
+        <div class="cue-box"><strong>Coaching cues</strong>"Drive through the heel of the foot on the step — not the toes" · "Keep your chest upright — do not lean into the step"</div>
+        <div class="flags">
+          <span class="flag flag-a">Straight set only — never superset. Balance under fatigue not appropriate.</span>
+          <span class="flag flag-a">Watch right leg control every rep vs left</span>
+          <span class="flag flag-a">Plantar fasciitis: full heel contact with step at all times</span>
+        </div>
+        <div class="muscles"><span class="muscle-tag">Quadriceps</span><span class="muscle-tag">Gluteus maximus</span><span class="muscle-tag">Gluteus medius</span><span class="muscle-tag">Hip stabilisers</span></div>
+        <div class="ex-log">
+          <div class="ex-log-title">Log this exercise</div>
+          <div class="log-row"><span class="log-label">Sets done</span><input class="log-input" type="number" placeholder="2" id="log-su-sets"></div>
+          <div class="log-row"><span class="log-label">Reps each leg</span><input class="log-input" type="text" placeholder="8" id="log-su-reps"></div>
+          <textarea class="log-notes" placeholder="Right vs left quality, notes..." id="log-su-notes" rows="2"></textarea>
+          <button class="done-btn" id="btn-stepup" onclick="markDone('stepup')"><span class="tick">○</span> Mark done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COOL-DOWN -->
+  <div class="blk">
+    <div class="blk-lbl">Cool-down — 7 min</div>
+
+    <div class="ex-card" id="card-tibialis">
+      <div class="ex-hdr" onclick="tog('tibialis')">
+        <div class="ex-num c" id="num-tibialis">C</div>
+        <div class="ex-name">Tibialis raise + calf raise</div>
+        <div class="ex-badge">Superset</div>
+        <div class="chevron" id="chev-tibialis">▼</div>
+      </div>
+      <div class="ex-body" id="body-tibialis">
+        <div class="field"><div class="field-lbl">Tibialis raise — 2 × 15</div>
+          <ul class="bullets"><li>Back against wall, heels ~15–20cm from wall</li><li>Lift toes and forefoot as high as possible, hold 1–2 sec at top</li><li>Lower with control — heels stay flat throughout</li></ul>
+        </div>
+        <div class="field"><div class="field-lbl">Calf raise on step edge — 3 × 12</div>
+          <ul class="bullets"><li>Heels hanging off step edge, one hand on wall</li><li>Rise onto toes, hold 1 sec, lower slowly below step level</li><li>The eccentric lowering is the key stimulus</li><li>Weeks 3–4: trial single leg</li></ul>
+        </div>
+        <div class="cue-box"><strong>Tibialis cue</strong>"Keep heels flat. Lift toes as high as you can — feel the shin muscles working."</div>
+        <div class="flags"><span class="flag flag-g">Evidence-backed for plantar fasciitis (Rathleff et al., 2015)</span></div>
+        <div class="muscles"><span class="muscle-tag">Tibialis anterior</span><span class="muscle-tag">Gastrocnemius</span><span class="muscle-tag">Soleus</span></div>
+        <div class="ex-log">
+          <div class="ex-log-title">Log this exercise</div>
+          <textarea class="log-notes" placeholder="Notes..." id="log-tib-notes" rows="2"></textarea>
+          <button class="done-btn" id="btn-tibialis" onclick="markDone('tibialis')"><span class="tick">○</span> Mark done</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ex-card" id="card-ankledorf">
+      <div class="ex-hdr" onclick="tog('ankledorf')">
+        <div class="ex-num c" id="num-ankledorf">C</div>
+        <div class="ex-name">Wall ankle dorsiflexion stretch</div>
+        <div class="ex-badge">2 × 10 each</div>
+        <div class="chevron" id="chev-ankledorf">▼</div>
+      </div>
+      <div class="ex-body" id="body-ankledorf">
+        <div class="field"><div class="field-lbl">Instructions</div>
+          <ul class="bullets"><li>Stand facing wall, one hand on wall</li><li>Foot ~10cm from wall, toes forward</li><li>Drive knee toward wall keeping heel flat on floor</li><li>Touch wall with knee, return — slow, no bouncing</li><li>Increase foot distance from wall 1–2cm each week</li><li>Mark heel position on floor — track the improvement</li></ul>
+        </div>
+        <div class="flags"><span class="flag flag-g">Primary fix for squat restriction — track distance weekly</span></div>
+        <div class="muscles"><span class="muscle-tag">Gastrocnemius</span><span class="muscle-tag">Soleus</span><span class="muscle-tag">Ankle joint capsule</span></div>
+        <div class="ex-log">
+          <div class="ex-log-title">Log this exercise</div>
+          <div class="log-row"><span class="log-label">Distance (cm)</span><input class="log-input" type="number" placeholder="10" id="log-ad-cm"></div>
+          <textarea class="log-notes" placeholder="Notes..." id="log-ad-notes" rows="2"></textarea>
+          <button class="done-btn" id="btn-ankledorf" onclick="markDone('ankledorf')"><span class="tick">○</span> Mark done</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ex-card" id="card-hipflex">
+      <div class="ex-hdr" onclick="tog('hipflex')">
+        <div class="ex-num c" id="num-hipflex">C</div>
+        <div class="ex-name">Hip flexor stretch</div>
+        <div class="ex-badge">2 × 30 sec each</div>
+        <div class="chevron" id="chev-hipflex">▼</div>
+      </div>
+      <div class="ex-body" id="body-hipflex">
+        <div class="field"><div class="field-lbl">Instructions</div>
+          <ul class="bullets"><li>Stand facing wall, one hand for balance</li><li>Step right foot back into split stance, back knee soft</li><li>Tuck pelvis gently under — posterior tilt</li><li>Feel stretch at front of back hip — not lower back</li></ul>
+        </div>
+        <div class="flags"><span class="flag flag-g">Primary anterior pelvic tilt intervention — do not skip</span></div>
+        <div class="muscles"><span class="muscle-tag">Iliopsoas</span><span class="muscle-tag">Rectus femoris</span></div>
+        <div class="ex-log">
+          <div class="ex-log-title">Log this exercise</div>
+          <textarea class="log-notes" placeholder="Notes..." id="log-hf-notes" rows="2"></textarea>
+          <button class="done-btn" id="btn-hipflex" onclick="markDone('hipflex')"><span class="tick">○</span> Mark done</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ex-card" id="card-hamstring">
+      <div class="ex-hdr" onclick="tog('hamstring')">
+        <div class="ex-num c" id="num-hamstring">C</div>
+        <div class="ex-name">Seated hamstring stretch</div>
+        <div class="ex-badge">30 sec each</div>
+        <div class="chevron" id="chev-hamstring">▼</div>
+      </div>
+      <div class="ex-body" id="body-hamstring">
+        <div class="field"><div class="field-lbl">Instructions</div>
+          <ul class="bullets"><li>Sit on bench, one leg extended in front</li><li>Sit tall, hinge forward from hip — not lower back</li><li>Reach toward foot — she can touch her toes</li></ul>
+        </div>
+        <div class="muscles"><span class="muscle-tag">Biceps femoris</span><span class="muscle-tag">Semitendinosus</span><span class="muscle-tag">Semimembranosus</span></div>
+        <div class="ex-log">
+          <div class="ex-log-title">Log this exercise</div>
+          <textarea class="log-notes" placeholder="Notes..." id="log-hs-notes" rows="2"></textarea>
+          <button class="done-btn" id="btn-hamstring" onclick="markDone('hamstring')"><span class="tick">○</span> Mark done</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ex-card" id="card-thoracic">
+      <div class="ex-hdr" onclick="tog('thoracic')">
+        <div class="ex-num c" id="num-thoracic">C</div>
+        <div class="ex-name">Thoracic extension over Swiss ball</div>
+        <div class="ex-badge">1 × 45 sec</div>
+        <div class="chevron" id="chev-thoracic">▼</div>
+      </div>
+      <div class="ex-body" id="body-thoracic">
+        <div class="field"><div class="field-lbl">Instructions</div>
+          <ul class="bullets"><li>Sit on mat, Swiss ball behind</li><li>Lean back so mid-back drapes over ball — not lower back</li><li>Breathe slowly — let gravity open the thoracic spine</li><li>Come back up slowly and with full control</li></ul>
+        </div>
+        <div class="flags"><span class="flag flag-a">Head below heart — rise slowly. Pause seated 5 sec before standing.</span></div>
+        <div class="muscles"><span class="muscle-tag">Thoracic erectors</span><span class="muscle-tag">Rhomboids</span></div>
+        <div class="ex-log">
+          <div class="ex-log-title">Log this exercise</div>
+          <textarea class="log-notes" placeholder="Notes..." id="log-th-notes" rows="2"></textarea>
+          <button class="done-btn" id="btn-thoracic" onclick="markDone('thoracic')"><span class="tick">○</span> Mark done</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ex-card" id="card-pelvic">
+      <div class="ex-hdr" onclick="tog('pelvic')">
+        <div class="ex-num c" id="num-pelvic">C</div>
+        <div class="ex-name">Pelvic floor clinic routine</div>
+        <div class="ex-badge">Prescribed</div>
+        <div class="chevron" id="chev-pelvic">▼</div>
+      </div>
+      <div class="ex-body" id="body-pelvic">
+        <div class="field"><div class="field-lbl">Instructions</div>
+          <ul class="bullets"><li>Specialist clinic exercises in prescribed positions</li><li>End every session — pelvic floor is warm and has context now</li><li>Non-negotiable every session</li></ul>
+        </div>
+        <div class="ex-log">
+          <div class="ex-log-title">Log this exercise</div>
+          <textarea class="log-notes" placeholder="Notes..." id="log-pf-notes" rows="2"></textarea>
+          <button class="done-btn" id="btn-pelvic" onclick="markDone('pelvic')"><span class="tick">○</span> Mark done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG SESSION BUTTON -->
+  <div style="padding:0 16px 8px">
+    <button class="save-metric-btn" style="width:100%;justify-content:center;padding:12px" onclick="saveSession()">💾 Save today's session</button>
+    <div id="save-msg" style="display:none;text-align:center;padding:8px;font-size:12px;color:var(--moss);font-weight:500">Session saved ✓</div>
+  </div>
+
+  <div class="prog-note">
+    <strong>Phase 1 principle:</strong> Same 7 exercises all 4 weeks. Goal is owning the brace, every movement pattern, and building the training habit. Progression is quality, not quantity.<br><br>
+
+  </div>
+</div>
+
+<!-- =================== DAILY PROTOCOL PAGE =================== -->
+<div class="page" id="page-daily">
+  <div class="sec-title">📅 Daily protocol — 5 min every day</div>
+  <div class="daily-card">
+    <div class="daily-hdr">
+      <h3>Every morning</h3>
+      <p>Stack with pelvic floor exercises · No warm-up needed · Never skip</p>
+    </div>
+    <div class="daily-body">
+      <div class="daily-ex">
+        <div class="daily-ex-hdr"><div class="daily-ex-name">Band pull-apart</div><div class="daily-ex-sets">3 × 15</div></div>
+        <div class="daily-ex-desc">Standing, blue band at chest height, arms extended. Pull band apart horizontally until hands reach sides. Squeeze shoulder blades together at end of pull. Return with control. Shoulders down and away from ears throughout.</div>
+      </div>
+      <div class="daily-ex">
+        <div class="daily-ex-hdr"><div class="daily-ex-name">Single-leg balance</div><div class="daily-ex-sets">Right: 4 × 20 sec · Left: 3 × 20 sec</div></div>
+        <div class="daily-ex-desc">Stand near wall — within reach, not touching. Eyes open, fixed gaze on wall. Right leg gets one extra set — this is the deficit leg. Let the wobbles happen — that is the nervous system adapting.</div>
+      </div>
+      <div class="daily-ex">
+        <div class="daily-ex-hdr"><div class="daily-ex-name">Pelvic floor clinic routine</div><div class="daily-ex-sets">Prescribed sets</div></div>
+        <div class="daily-ex-desc">Specialist clinic exercises in prescribed positions. Stack at the end of the daily protocol so it becomes one unbroken 5-minute habit.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-title">🖐 Wrist protocol — before every session</div>
+  <div class="wrist-card">
+    <div class="wrist-title">2 min · Do this before the bike warm-up</div>
+    <div class="wrist-grid">
+      <div class="wrist-step"><strong>1 — Wrist circles</strong>10 reps each direction, both hands. Slow, full range.</div>
+      <div class="wrist-step"><strong>2 — Flex & extend</strong>Full range. 10 reps each hand.</div>
+      <div class="wrist-step"><strong>3 — Prayer stretch</strong>Palms together, lower slowly. Hold 15 sec.</div>
+      <div class="wrist-step"><strong>4 — Reverse prayer</strong>Backs of hands together, raise slowly. Hold 10 sec. Skip if pain.</div>
+      <div class="wrist-step"><strong>5 — Spread & squeeze</strong>Wide 2 sec, fist 2 sec. 5 reps each hand.</div>
+      <div class="wrist-step" style="background:var(--danger-bg);border-color:rgba(192,57,43,0.2)"><strong style="color:var(--danger)">Right wrist</strong>Clicking noted. Pain → stop and note it.</div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== PROGRESS PAGE =================== -->
+<div class="page" id="page-progress">
+  <div class="progress-page">
+    <div class="sec-title" style="padding-left:0">Progress tracker</div>
+    <div class="prog-summary" id="prog-summary">
+      <div class="prog-stat"><span class="prog-stat-num" id="stat-sessions">0</span><span class="prog-stat-lbl">Sessions logged</span></div>
+      <div class="prog-stat"><span class="prog-stat-num" id="stat-streak">0</span><span class="prog-stat-lbl">Week streak</span><div class="prog-stat-sub" id="stat-streak-sub"></div></div>
+      <div class="prog-stat"><span class="prog-stat-num" id="stat-ex">0</span><span class="prog-stat-lbl">Exercises done</span></div>
+      <div class="prog-stat"><span class="prog-stat-num" id="stat-ankle">—</span><span class="prog-stat-lbl">Ankle (cm)</span><div class="prog-stat-sub">Latest</div></div>
+    </div>
+
+    <!-- LOG SESSION METRICS -->
+    <div class="metric-card">
+      <div class="metric-hdr"><h4>Log session metrics</h4><span>Saved per session</span></div>
+      <div class="metric-body">
+        <div class="session-log-form">
+          <h4>Today's measurements</h4>
+          <div class="form-row">
+            <div class="form-field"><label>Date</label><input type="date" id="m-date"></div>
+            <div class="form-field"><label>Week</label><select id="m-week"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Right leg balance (sec)</label><input type="number" id="m-rbal" placeholder="e.g. 18"></div>
+            <div class="form-field"><label>Left leg balance (sec)</label><input type="number" id="m-lbal" placeholder="e.g. 30"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Ankle stretch (cm)</label><input type="number" id="m-ankle" placeholder="cm from wall"></div>
+            <div class="form-field"><label>RPE (1–10)</label><input type="number" id="m-rpe" placeholder="e.g. 5" min="1" max="10"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field" style="flex:2"><label>Session notes</label><textarea id="m-notes" rows="2" placeholder="How did it go? Soreness, wins, flags..."></textarea></div>
+          </div>
+          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px">
+            <button class="save-metric-btn" onclick="saveMetric()">💾 Save entry</button>
+            <button class="clear-btn" onclick="clearAll()">🗑 Clear all data</button>
+          </div>
+          <div id="metric-msg" style="display:none;margin-top:8px;font-size:12px;color:var(--moss);font-weight:500">Saved ✓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BALANCE CHART -->
+    <div class="metric-card">
+      <div class="metric-hdr"><h4>Single-leg balance</h4><span>Right vs Left (sec)</span></div>
+      <div class="metric-body">
+        <div class="chart-wrap"><canvas id="chart-balance"></canvas></div>
+        <div style="display:flex;gap:12px;margin-top:8px;font-size:11px;color:rgba(61,46,30,0.55)">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:3px;background:var(--clay);display:inline-block;border-radius:2px"></span>Right leg</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:3px;background:var(--moss);display:inline-block;border-radius:2px"></span>Left leg</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANKLE CHART -->
+    <div class="metric-card">
+      <div class="metric-hdr"><h4>Ankle dorsiflexion</h4><span>Distance from wall (cm)</span></div>
+      <div class="metric-body">
+        <div class="chart-wrap"><canvas id="chart-ankle"></canvas></div>
+        <div style="font-size:11px;color:rgba(61,46,30,0.55);margin-top:6px">Higher = better ankle mobility. Baseline: 10cm target.</div>
+      </div>
+    </div>
+
+    <!-- SESSION LOG -->
+    <div class="metric-card">
+      <div class="metric-hdr"><h4>Session log</h4><span id="log-count">0 entries</span></div>
+      <div class="metric-body" id="session-log-list">
+        <div class="empty-state"><span class="icon">📋</span>No sessions logged yet. Save your first session above.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== NUTRITION PAGE =================== -->
+<div class="page" id="page-nutrition">
+  <div class="sec-title">Nutrition targets</div>
+  <div class="nut-card">
+    <div class="nut-hdr">
+      <h3>Daily targets — 155cm · 66.1kg</h3>
+      <p>Estimated lean mass ~41.2kg · Recalculate with BIA when available</p>
+    </div>
+    <div class="nut-body">
+      <div class="macro-row">
+        <div class="macro"><span class="macro-num">1,750</span><span class="macro-lbl">Calories</span><div class="macro-sub">~200 below TDEE</div></div>
+        <div class="macro"><span class="macro-num">90g</span><span class="macro-lbl">Protein</span><div class="macro-sub">2.2g/kg lean mass</div></div>
+        <div class="macro"><span class="macro-num">2L+</span><span class="macro-lbl">Water</span><div class="macro-sub">Already doing ✓</div></div>
+      </div>
+      <div class="nut-item"><strong>Evening protein — highest priority:</strong> Nothing eaten after 5:30pm, fast until 7am — 13 hours with zero protein. Add Greek yogurt with seeds, 2–3 eggs, or fish. Target 25–30g. Single highest-leverage change available.</div>
+      <div class="nut-item"><strong>Current protein ~75g/day. Target 90g.</strong> The evening meal addition closes most of this gap.</div>
+      <div class="nut-item"><strong>Collagen timing:</strong> Marine collagen is most effective taken 30–60 min before a training session alongside 50mg Vitamin C. Consider moving her dose to pre-session rather than a general supplement.</div>
+      <div class="nut-item"><strong>Magnesium timing:</strong> Her 150mg magnesium is well-placed. Taking it in the evening supports sleep quality — relevant given the link between sleep, recovery, and cortisol in post-menopausal women.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- DATA ----
+const KEY = 'sharon_prog_v4';
+function getData(){ try{ return JSON.parse(localStorage.getItem(KEY))||{metrics:[],sessions:[],done:{}}; }catch(e){ return {metrics:[],sessions:[],done:{}}; } }
+function setData(d){ localStorage.setItem(KEY,JSON.stringify(d)); }
+
+// ---- PAGES ----
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const tabs=['programme','daily','progress','nutrition'];
+  const idx=tabs.indexOf(id);
+  if(idx>=0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  if(id==='progress') renderProgress();
+}
+
+// ---- WEEK ----
+const wkLabels={1:'Straight sets · learn every movement',2:'Supersets introduced · consolidate',3:'Squat to box → heel-elevated squat',4:'Full consolidation · own every cue'};
+function setWeek(w,btn){
+  document.querySelectorAll('.wk-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('wk-lbl').textContent=wkLabels[w];
+  // superset notes
+  const ss=w>=2;
+  ['a','b','c'].forEach(p=>{
+    const n=document.getElementById('note-'+p);
+    if(n) n.classList.toggle('show',ss);
+  });
+  // squat name + bullets
+  if(w<=2){
+    document.getElementById('name-squat').textContent='Squat to bench';
+    document.getElementById('sets-squat').textContent='3 × 10 · 3 sec down';
+  } else {
+    document.getElementById('name-squat').textContent='Heel-elevated squat';
+    document.getElementById('sets-squat').textContent='3 × 12 · 3 sec down';
+  }
+  // sets labels
+  const s={
+    'sets-glute':{1:'2 × 10',2:'3 × 10',3:'3 × 12',4:'3 × 12'},
+    'sets-pushup':{1:'Stage 1 · 2 × 20',2:'Stage 1–2 · 2–3 × 20',3:'Stage 2 · 3 × 20',4:'Stage 3 · 2 × 30'},
+    'sets-row':{1:'2 × 10',2:'3 × 10',3:'3 × 12',4:'3 × 12'},
+    'sets-rdl':{1:'2 × 8 · 2 sec down',2:'3 × 8 · 2 sec down',3:'3 × 10 · 2 sec down',4:'3 × 10 · 2 sec down'},
+    'sets-stepup':{1:'2 × 8 each leg',2:'2 × 8 each leg',3:'3 × 8 each leg',4:'3 × 8 each leg'},
+    'sets-deadbug':{1:'L1 · 5×5 sec',2:'L2 · 5×5 sec + PF',3:'L3 · 3×6 each side',4:'L4 · 3×8–10'}
+  };
+  for(const[id,vals] of Object.entries(s)){
+    const el=document.getElementById(id);
+    if(el) el.textContent=vals[w];
+  }
+}
+
+// ---- CORE LEVEL TABS ----
+const levTitles={1:'Level 1 — Dead-bug hold',2:'Level 2 — Dead-bug + pelvic floor',3:'Level 3 — Dead-bug extension',4:'Level 4 — McGill modified curl-up'};
+const levWhens={1:'Week 1 · Brace only · No movement',2:'Week 2 · Add PF · Only when Level 1 owned',3:'Week 2–3 · Extension · Only when Level 2 owned',4:'Week 3–4 · Curl-up · Only when Level 3 owned'};
+function setLev(l,btn){
+  document.querySelectorAll('.lev-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.core-lev').forEach(el=>el.classList.remove('active'));
+  document.getElementById('lev'+l).classList.add('active');
+  document.getElementById('core-title').textContent=levTitles[l];
+  document.getElementById('core-when').textContent=levWhens[l];
+}
+
+// ---- TOGGLE EXERCISE ----
+function tog(id){
+  const body=document.getElementById('body-'+id);
+  const chev=document.getElementById('chev-'+id);
+  const open=body.classList.contains('open');
+  body.classList.toggle('open',!open);
+  if(chev) chev.classList.toggle('open',!open);
+}
+
+// ---- MARK DONE ----
+function markDone(id){
+  const btn=document.getElementById('btn-'+id);
+  const card=document.getElementById('card-'+id);
+  const num=document.getElementById('num-'+id);
+  const d=getData();
+  if(!d.done) d.done={};
+  const today=new Date().toISOString().split('T')[0];
+  const key=today+'_'+id;
+  if(d.done[key]){
+    delete d.done[key];
+    btn.classList.remove('completed');
+    btn.innerHTML='<span class="tick">○</span> Mark done';
+    card.classList.remove('done');
+    if(num&&!['W','C'].includes(num.textContent)) num.classList.remove('done');
+  } else {
+    d.done[key]=true;
+    btn.classList.add('completed');
+    btn.innerHTML='<span class="tick">✓</span> Done';
+    card.classList.add('done');
+    if(num) num.classList.add('done');
+    setData(d);
+  }
+  setData(d);
+}
+
+// ---- SAVE SESSION ----
+function saveSession(){
+  const d=getData();
+  const today=new Date().toISOString().split('T')[0];
+  const exerciseDone=[];
+  const exIds=['bike','ankle','glute','deadbug','pushup','row','squat','rdl','stepup','tibialis','ankledorf','hipflex','hamstring','thoracic','pelvic'];
+  exIds.forEach(id=>{
+    const key=today+'_'+id;
+    if(d.done&&d.done[key]) exerciseDone.push(id);
+  });
+  const session={
+    date:today,
+    week:document.querySelector('.wk-btn.active')?.textContent||'1',
+    exercises_done:exerciseDone,
+    ankle_cm:document.getElementById('log-ad-cm')?.value||null,
+    notes:'Session exercises logged'
+  };
+  if(!d.sessions) d.sessions=[];
+  const existing=d.sessions.findIndex(s=>s.date===today);
+  if(existing>=0) d.sessions[existing]=session;
+  else d.sessions.push(session);
+  setData(d);
+  const msg=document.getElementById('save-msg');
+  msg.style.display='block';
+  setTimeout(()=>msg.style.display='none',2000);
+  updateSummaryStats();
+}
+
+// ---- SAVE METRIC ----
+function saveMetric(){
+  const d=getData();
+  if(!d.metrics) d.metrics=[];
+  const entry={
+    date:document.getElementById('m-date').value||new Date().toISOString().split('T')[0],
+    week:document.getElementById('m-week').value,
+    rbal:parseFloat(document.getElementById('m-rbal').value)||null,
+    lbal:parseFloat(document.getElementById('m-lbal').value)||null,
+    ankle:parseFloat(document.getElementById('m-ankle').value)||null,
+    rpe:parseFloat(document.getElementById('m-rpe').value)||null,
+    notes:document.getElementById('m-notes').value
+  };
+  const existing=d.metrics.findIndex(m=>m.date===entry.date);
+  if(existing>=0) d.metrics[existing]=entry;
+  else d.metrics.push(entry);
+  d.metrics.sort((a,b)=>a.date.localeCompare(b.date));
+  setData(d);
+  const msg=document.getElementById('metric-msg');
+  msg.style.display='block';
+  setTimeout(()=>msg.style.display='none',2000);
+  renderProgress();
+}
+
+// ---- CLEAR ALL ----
+function clearAll(){
+  if(confirm('Clear all progress data? This cannot be undone.')){
+    localStorage.removeItem(KEY);
+    renderProgress();
+    updateSummaryStats();
+  }
+}
+
+// ---- RENDER PROGRESS ----
+let chartBal=null,chartAnk=null;
+function renderProgress(){
+  const d=getData();
+  updateSummaryStats();
+  const metrics=d.metrics||[];
+  const sessions=d.sessions||[];
+
+  // session log list
+  const list=document.getElementById('session-log-list');
+  document.getElementById('log-count').textContent=sessions.length+' entries';
+  if(sessions.length===0){
+    list.innerHTML='<div class="empty-state"><span class="icon">📋</span>No sessions logged yet.</div>';
+  } else {
+    const sorted=[...sessions].reverse();
+    list.innerHTML=sorted.map(s=>{
+      const names={'bike':'Bike','ankle':'Ankle WU','glute':'Glute bridge','deadbug':'Dead bug','pushup':'Push-up','row':'Row','squat':'Squat','rdl':'RDL','stepup':'Step-up','tibialis':'Tibialis','ankledorf':'Ankle stretch','hipflex':'Hip flex','hamstring':'Hamstring','thoracic':'Thoracic','pelvic':'PF'};
+      const pills=(s.exercises_done||[]).map(id=>`<span class="log-ex-pill log-ex-done">${names[id]||id}</span>`).join('');
+      return `<div class="log-entry"><div class="log-entry-hdr"><span class="log-entry-date">${s.date}</span><span class="log-entry-wk">Week ${s.week}</span></div><div class="log-entry-exes">${pills}</div></div>`;
+    }).join('');
+  }
+
+  // build chart data
+  const labels=metrics.map(m=>'W'+m.week+' '+m.date.slice(5));
+  const rbalData=metrics.map(m=>m.rbal);
+  const lbalData=metrics.map(m=>m.lbal);
+  const ankleData=metrics.map(m=>m.ankle);
+
+  // balance chart
+  const bctx=document.getElementById('chart-balance').getContext('2d');
+  if(chartBal) chartBal.destroy();
+  chartBal=drawLineChart(bctx,labels,[
+    {data:rbalData,color:'#C4603A',label:'Right'},
+    {data:lbalData,color:'#3A5040',label:'Left'}
+  ]);
+
+  // ankle chart
+  const actx=document.getElementById('chart-ankle').getContext('2d');
+  if(chartAnk) chartAnk.destroy();
+  chartAnk=drawLineChart(actx,labels,[
+    {data:ankleData,color:'#B8903A',label:'Ankle cm'}
+  ]);
+
+  // update ankle stat
+  const lastAnkle=ankleData.filter(v=>v!=null).slice(-1)[0];
+  document.getElementById('stat-ankle').textContent=lastAnkle!=null?lastAnkle+'cm':'—';
+}
+
+function updateSummaryStats(){
+  const d=getData();
+  const sessions=d.sessions||[];
+  document.getElementById('stat-sessions').textContent=sessions.length;
+  const totalEx=sessions.reduce((a,s)=>a+(s.exercises_done||[]).length,0);
+  document.getElementById('stat-ex').textContent=totalEx;
+  // streak: count weeks with at least 2 sessions
+  const bywk={};
+  sessions.forEach(s=>{ if(!bywk[s.week]) bywk[s.week]=0; bywk[s.week]++; });
+  const streak=Object.values(bywk).filter(v=>v>=2).length;
+  document.getElementById('stat-streak').textContent=streak;
+  document.getElementById('stat-streak-sub').textContent=streak>0?'weeks w/ 2+ sessions':'';
+}
+
+// ---- SIMPLE LINE CHART (no external libs) ----
+function drawLineChart(ctx,labels,datasets){
+  const canvas=ctx.canvas;
+  const W=canvas.offsetWidth||320;
+  const H=120;
+  canvas.width=W*window.devicePixelRatio;
+  canvas.height=H*window.devicePixelRatio;
+  ctx.scale(window.devicePixelRatio,window.devicePixelRatio);
+
+  const pad={t:10,r:16,b:28,l:32};
+  const w=W-pad.l-pad.r;
+  const h=H-pad.t-pad.b;
+
+  ctx.clearRect(0,0,W,H);
+
+  // gather all values
+  const allVals=datasets.flatMap(d=>d.data).filter(v=>v!=null);
+  if(allVals.length===0){
+    ctx.fillStyle='rgba(61,46,30,0.3)';
+    ctx.font='12px DM Sans,sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('No data yet — log a session to see your progress',W/2,H/2);
+    return null;
+  }
+  const minV=Math.max(0,Math.min(...allVals)-5);
+  const maxV=Math.max(...allVals)+5;
+  const n=labels.length;
+
+  const xPos=i=>pad.l+(n<=1?w/2:i*(w/(n-1)));
+  const yPos=v=>pad.t+h-(((v-minV)/(maxV-minV))*h);
+
+  // grid lines
+  ctx.strokeStyle='rgba(61,46,30,0.07)';
+  ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=pad.t+(h/4)*i;
+    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+w,y);ctx.stroke();
+  }
+
+  // y axis labels
+  ctx.fillStyle='rgba(61,46,30,0.4)';
+  ctx.font='10px DM Sans,sans-serif';
+  ctx.textAlign='right';
+  for(let i=0;i<=4;i++){
+    const v=Math.round(minV+(maxV-minV)*(1-i/4));
+    const y=pad.t+(h/4)*i;
+    ctx.fillText(v,pad.l-4,y+4);
+  }
+
+  // x axis labels
+  ctx.textAlign='center';
+  labels.forEach((lbl,i)=>{
+    ctx.fillText(lbl,xPos(i),H-6);
+  });
+
+  // datasets
+  datasets.forEach(ds=>{
+    const pts=ds.data.map((v,i)=>v!=null?{x:xPos(i),y:yPos(v)}:null);
+    // line
+    ctx.beginPath();
+    ctx.strokeStyle=ds.color;
+    ctx.lineWidth=2;
+    let started=false;
+    pts.forEach(p=>{
+      if(!p) return;
+      if(!started){ctx.moveTo(p.x,p.y);started=true;}
+      else ctx.lineTo(p.x,p.y);
+    });
+    ctx.stroke();
+    // dots
+    pts.forEach(p=>{
+      if(!p) return;
+      ctx.beginPath();
+      ctx.fillStyle=ds.color;
+      ctx.arc(p.x,p.y,3.5,0,Math.PI*2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.fillStyle='white';
+      ctx.arc(p.x,p.y,1.5,0,Math.PI*2);
+      ctx.fill();
+    });
+  });
+  return {destroy:function(){}};
+}
+
+// ---- INIT ----
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('m-date').value=new Date().toISOString().split('T')[0];
+  restoreDoneState();
+  updateSummaryStats();
+});
+function restoreDoneState(){
+  const d=getData();
+  if(!d.done) return;
+  const today=new Date().toISOString().split('T')[0];
+  Object.keys(d.done).forEach(key=>{
+    if(key.startsWith(today+'_')){
+      const id=key.replace(today+'_','');
+      const btn=document.getElementById('btn-'+id);
+      const card=document.getElementById('card-'+id);
+      const num=document.getElementById('num-'+id);
+      if(btn){ btn.classList.add('completed'); btn.innerHTML='<span class="tick">✓</span> Done'; }
+      if(card) card.classList.add('done');
+      if(num) num.classList.add('done');
+    }
+  });
+}
+</script>
+</body>
+</html>
