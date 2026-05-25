@@ -236,7 +236,6 @@ canvas.chart{width:100%!important;height:120px!important}
   <div class="nav-tab active" onclick="showPage('programme')">Programme</div>
   <div class="nav-tab" onclick="showPage('daily')">Daily Protocol</div>
   <div class="nav-tab" onclick="showPage('progress')">Progress</div>
-  <div class="nav-tab" onclick="showPage('nutrition')">Nutrition</div>
 </div>
 
 <!-- =================== PROGRAMME PAGE =================== -->
@@ -246,7 +245,7 @@ canvas.chart{width:100%!important;height:120px!important}
     <div class="safety-title">⚠ Safety — every session</div>
     <div class="safety-row">Dizziness at any point → sit on the floor immediately. Wait until fully clear.</div>
     <div class="safety-row">RPE 4–6 only. Must be able to speak in short sentences throughout.</div>
-    <div class="safety-row">Statin watch: unusual muscle aching beyond normal DOMS → flag to GP immediately.</div>
+
   </div>
 
   <div class="sec-title">🖐 Wrist protocol — 2 min opener</div>
@@ -266,8 +265,8 @@ canvas.chart{width:100%!important;height:120px!important}
   <div class="core-card">
     <div class="core-hdr">
       <div>
-        <h3 id="core-title">Level 1 — Dead-bug hold</h3>
-        <p id="core-when" style="font-size:11px;color:rgba(255,255,255,0.72);margin-top:2px">Week 1 · Brace only · No movement</p>
+        <h3 id="core-title">Level 1 — Dead-bug + pelvic floor</h3>
+        <p id="core-when" style="font-size:11px;color:rgba(255,255,255,0.72);margin-top:2px">Week 1 · Hold + PF · Foundation</p>
       </div>
       <div class="lev-tabs">
         <button class="lev-btn active" onclick="setLev(1,this)">L1</button>
@@ -277,54 +276,81 @@ canvas.chart{width:100%!important;height:120px!important}
       </div>
     </div>
     <div class="core-lev active" id="lev1">
-      <div class="core-lev-name">Dead-bug hold — brace only</div>
+      <div class="core-lev-name">Dead-bug hold + pelvic floor</div>
       <div class="core-lev-when">Week 1 · 5 × 5 sec holds</div>
       <div class="core-field"><div class="core-field-lbl">Instructions</div>
         <ul class="core-bullets">
           <li>Lie on mat, knees bent at 90°, shins parallel to floor</li>
-          <li>Arms pointing straight up to the ceiling</li>
+          <li>Hold Swiss ball between both hands and knees — arms extended, knees pressing gently into ball</li>
           <li>No movement — this is a hold only</li>
           <li>Hold 5 sec, release fully, rest 5 sec. Repeat 5 times</li>
         </ul>
       </div>
       <div class="core-field"><div class="core-field-lbl">Bracing & breathing</div>
         <ul class="core-bullets">
+          <li>Lift pelvic floor gently — as if stopping the flow of urine</li>
           <li>Breathe in through nose — feel ribcage expand front, sides and back</li>
           <li>Hold air and brace 360° as if about to be poked in the stomach</li>
-          <li>Hold 5 seconds — keep the brace the whole time</li>
-          <li>Release everything fully before the next rep</li>
+          <li>Hold 5 sec — PF and brace both held throughout</li>
+          <li>Release everything fully — PF first, then brace</li>
         </ul>
       </div>
-      <div class="core-pf"><strong>Coaching cue</strong>"Push outward slightly then squeeze all the way around — front, sides and back" · "Don't suck your belly in — brace outward then tight"</div>
+      <div class="core-pf"><strong>Coaching cue</strong>"Lift, breathe, brace — in that order, every time" · "Don't suck your belly in — brace outward then tight" · "The ball is feedback — if it wobbles, you've lost the brace"</div>
     </div>
     <div class="core-lev" id="lev2">
-      <div class="core-lev-name">Dead-bug hold + pelvic floor</div>
-      <div class="core-lev-when">Week 2 · 5 × 5 sec holds · Only when Level 1 brace is consistent</div>
+      <div class="core-lev-name">Dead-bug — arms only</div>
+      <div class="core-lev-when">Week 2 · 3 × 8 each side · Only when Level 1 is consistent</div>
       <div class="core-field"><div class="core-field-lbl">Instructions</div>
         <ul class="core-bullets">
-          <li>Same position as Level 1 — add pelvic floor lift before every brace</li>
-          <li>Hold 5 seconds, release fully, rest 5 seconds. Repeat 5 times</li>
+          <li>Hold Swiss ball between both hands and both knees — 4 points of contact to start</li>
+          <li>Slowly lower one arm overhead toward the floor — ball stays in contact with the other hand and both knees throughout</li>
+          <li>3 points of contact with the ball at all times — the moving arm is the only thing that leaves</li>
+          <li>Lower back stays pressed into the mat throughout — this is the only rule</li>
+          <li>Return arm to start (4 points), then lower the other arm. Alternate each rep</li>
         </ul>
       </div>
       <div class="core-field"><div class="core-field-lbl">Bracing & breathing</div>
         <ul class="core-bullets">
-          <li>Lift pelvic floor gently — as if stopping the flow of urine</li>
-          <li>Breathe in through nose → brace 360°</li>
-          <li>Hold 5 seconds — PF and brace both held</li>
-          <li>Release everything fully — PF first, then brace</li>
+          <li>PF lift → breathe in → brace 360° before you move</li>
+          <li>Lower arm as you exhale slowly</li>
+          <li>Keep brace through full movement and return</li>
+          <li>Breathe in at start, reset brace before switching sides</li>
         </ul>
       </div>
-      <div class="core-pf"><strong>Coaching cue</strong>"Lift, breathe, brace — in that order, every time" · "Release everything completely between reps"</div>
+      <div class="core-pf"><strong>Coaching cue</strong>"3 points on the ball at all times — only the moving arm leaves" · "If the ball moves or drops, you've lost control — return and reset" · "If your lower back lifts, make the arm movement smaller"</div>
     </div>
     <div class="core-lev" id="lev3">
-      <div class="core-lev-name">Dead-bug — arm and leg extension</div>
-      <div class="core-lev-when">Week 2–3 · 3 × 6 each side · Only when Level 2 is owned</div>
+      <div class="core-lev-name">Dead-bug — legs only</div>
+      <div class="core-lev-when">Week 3 · 3 × 8 each side · Only when Level 2 is owned</div>
       <div class="core-field"><div class="core-field-lbl">Instructions</div>
         <ul class="core-bullets">
-          <li>Hold Swiss ball between both hands and knees</li>
-          <li>Slowly extend one arm overhead and opposite leg toward floor</li>
-          <li>Lower back stays pressed into mat throughout — this is the only rule that matters</li>
-          <li>Return to start, switch sides</li>
+          <li>Hold Swiss ball between both hands and both knees — 4 points of contact to start</li>
+          <li>Slowly extend one leg, lowering heel toward the floor — ball stays in contact with both hands and the other knee throughout</li>
+          <li>3 points of contact with the ball at all times — the moving leg is the only thing that leaves</li>
+          <li>Keep a soft bend in the extending knee — do not fully straighten the leg at first</li>
+          <li>Lower back stays pressed into mat throughout</li>
+          <li>Return leg to start (4 points), then extend the other leg. Alternate each rep</li>
+        </ul>
+      </div>
+      <div class="core-field"><div class="core-field-lbl">Bracing & breathing</div>
+        <ul class="core-bullets">
+          <li>PF lift → breathe in → brace 360° before you move</li>
+          <li>Lower leg as you exhale slowly</li>
+          <li>Keep brace through full extension and return</li>
+          <li>Breathe in at start, reset before switching sides</li>
+        </ul>
+      </div>
+      <div class="core-pf"><strong>Coaching cue</strong>"3 points on the ball at all times — only the moving leg leaves" · "If the ball moves or drops, you've lost control — return and reset" · "If the lower back lifts — reduce the range of the extending leg"</div>
+    </div>
+    <div class="core-lev" id="lev4">
+      <div class="core-lev-name">Dead-bug — full extension</div>
+      <div class="core-lev-when">Week 4 · 3 × 6 each side · Only when Level 3 is owned</div>
+      <div class="core-field"><div class="core-field-lbl">Instructions</div>
+        <ul class="core-bullets">
+          <li>Same starting position — hold Swiss ball between both hands and knees</li>
+          <li>Slowly extend opposite arm overhead and opposite leg toward floor simultaneously</li>
+          <li>Lower back stays pressed into mat throughout — no exceptions</li>
+          <li>Return to start, switch sides. The ball provides feedback — if it drops, control is lost</li>
         </ul>
       </div>
       <div class="core-field"><div class="core-field-lbl">Bracing & breathing</div>
@@ -332,29 +358,10 @@ canvas.chart{width:100%!important;height:120px!important}
           <li>PF lift → breathe in → brace 360° before you move</li>
           <li>Extend arm and leg as you exhale slowly</li>
           <li>Keep brace through full extension and return</li>
+          <li>Breathe in at start, reset brace before switching sides</li>
         </ul>
       </div>
-      <div class="core-pf"><strong>Coaching cue</strong>"If your lower back lifts — you've gone too far. Make the movement smaller" · "Move slowly — speed is the enemy here"</div>
-    </div>
-    <div class="core-lev" id="lev4">
-      <div class="core-lev-name">McGill modified curl-up</div>
-      <div class="core-lev-when">Week 3–4 · 3 × 8 → 3 × 10 · Only when Level 3 is owned</div>
-      <div class="core-field"><div class="core-field-lbl">Instructions</div>
-        <ul class="core-bullets">
-          <li>Hand under lumbar spine — natural curve stays here throughout</li>
-          <li>Other arm flat, tuck chin gently toward chest</li>
-          <li>Lift only head and shoulders — stop before lower back would flatten</li>
-          <li>2 sec up, 1 sec hold, 2 sec down</li>
-        </ul>
-      </div>
-      <div class="core-field"><div class="core-field-lbl">Bracing & breathing</div>
-        <ul class="core-bullets">
-          <li>PF lift → breathe in → brace 360°</li>
-          <li>Lift as you exhale slowly, hold 1 sec at top</li>
-          <li>Lower as you breathe in, reset brace before next rep</li>
-        </ul>
-      </div>
-      <div class="core-pf"><strong>Coaching cue</strong>"The hand under your back protects the curve — if you feel it flatten, you've gone too far" · "Brace before you lift — every single rep"</div>
+      <div class="core-pf"><strong>Coaching cue</strong>"If your lower back lifts — you've gone too far. Make the movement smaller" · "Move slowly — speed is the enemy here" · "Don't drop the ball"</div>
     </div>
   </div>
 
@@ -821,20 +828,6 @@ canvas.chart{width:100%!important;height:120px!important}
         <div class="daily-ex-desc">Specialist clinic exercises in prescribed positions. Stack at the end of the daily protocol so it becomes one unbroken 5-minute habit.</div>
       </div>
     </div>
-  </div>
-
-  <div class="sec-title">🖐 Wrist protocol — before every session</div>
-  <div class="wrist-card">
-    <div class="wrist-title">2 min · Do this before the bike warm-up</div>
-    <div class="wrist-grid">
-      <div class="wrist-step"><strong>1 — Wrist circles</strong>10 reps each direction, both hands. Slow, full range.</div>
-      <div class="wrist-step"><strong>2 — Flex & extend</strong>Full range. 10 reps each hand.</div>
-      <div class="wrist-step"><strong>3 — Prayer stretch</strong>Palms together, lower slowly. Hold 15 sec.</div>
-      <div class="wrist-step"><strong>4 — Reverse prayer</strong>Backs of hands together, raise slowly. Hold 10 sec. Skip if pain.</div>
-      <div class="wrist-step"><strong>5 — Spread & squeeze</strong>Wide 2 sec, fist 2 sec. 5 reps each hand.</div>
-      <div class="wrist-step" style="background:var(--danger-bg);border-color:rgba(192,57,43,0.2)"><strong style="color:var(--danger)">Right wrist</strong>Clicking noted. Pain → stop and note it.</div>
-    </div>
-  </div>
 </div>
 
 <!-- =================== PROGRESS PAGE =================== -->
@@ -909,27 +902,7 @@ canvas.chart{width:100%!important;height:120px!important}
   </div>
 </div>
 
-<!-- =================== NUTRITION PAGE =================== -->
-<div class="page" id="page-nutrition">
-  <div class="sec-title">Nutrition targets</div>
-  <div class="nut-card">
-    <div class="nut-hdr">
-      <h3>Daily targets — 155cm · 66.1kg</h3>
-      <p>Estimated lean mass ~41.2kg · Recalculate with BIA when available</p>
-    </div>
-    <div class="nut-body">
-      <div class="macro-row">
-        <div class="macro"><span class="macro-num">1,750</span><span class="macro-lbl">Calories</span><div class="macro-sub">~200 below TDEE</div></div>
-        <div class="macro"><span class="macro-num">90g</span><span class="macro-lbl">Protein</span><div class="macro-sub">2.2g/kg lean mass</div></div>
-        <div class="macro"><span class="macro-num">2L+</span><span class="macro-lbl">Water</span><div class="macro-sub">Already doing ✓</div></div>
-      </div>
-      <div class="nut-item"><strong>Evening protein — highest priority:</strong> Nothing eaten after 5:30pm, fast until 7am — 13 hours with zero protein. Add Greek yogurt with seeds, 2–3 eggs, or fish. Target 25–30g. Single highest-leverage change available.</div>
-      <div class="nut-item"><strong>Current protein ~75g/day. Target 90g.</strong> The evening meal addition closes most of this gap.</div>
-      <div class="nut-item"><strong>Collagen timing:</strong> Marine collagen is most effective taken 30–60 min before a training session alongside 50mg Vitamin C. Consider moving her dose to pre-session rather than a general supplement.</div>
-      <div class="nut-item"><strong>Magnesium timing:</strong> Her 150mg magnesium is well-placed. Taking it in the evening supports sleep quality — relevant given the link between sleep, recovery, and cortisol in post-menopausal women.</div>
-    </div>
-  </div>
-</div>
+
 
 <script>
 // ---- DATA ----
@@ -942,7 +915,7 @@ function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
-  const tabs=['programme','daily','progress','nutrition'];
+  const tabs=['programme','daily','progress'];
   const idx=tabs.indexOf(id);
   if(idx>=0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
   if(id==='progress') renderProgress();
@@ -984,8 +957,8 @@ function setWeek(w,btn){
 }
 
 // ---- CORE LEVEL TABS ----
-const levTitles={1:'Level 1 — Dead-bug hold',2:'Level 2 — Dead-bug + pelvic floor',3:'Level 3 — Dead-bug extension',4:'Level 4 — McGill modified curl-up'};
-const levWhens={1:'Week 1 · Brace only · No movement',2:'Week 2 · Add PF · Only when Level 1 owned',3:'Week 2–3 · Extension · Only when Level 2 owned',4:'Week 3–4 · Curl-up · Only when Level 3 owned'};
+const levTitles={1:'Level 1 — Dead-bug + pelvic floor',2:'Level 2 — Dead-bug arms only',3:'Level 3 — Dead-bug legs only',4:'Level 4 — Dead-bug full extension'};
+const levWhens={1:'Week 1 · Hold + PF · Foundation',2:'Week 2 · Arms only · Only when Level 1 owned',3:'Week 3 · Legs only · Only when Level 2 owned',4:'Week 4 · Full extension · Only when Level 3 owned'};
 function setLev(l,btn){
   document.querySelectorAll('.lev-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
