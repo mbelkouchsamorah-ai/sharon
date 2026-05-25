@@ -815,19 +815,50 @@ canvas.chart{width:100%!important;height:120px!important}
       <p>Stack with pelvic floor exercises · No warm-up needed · Never skip</p>
     </div>
     <div class="daily-body">
-      <div class="daily-ex">
-        <div class="daily-ex-hdr"><div class="daily-ex-name">Band pull-apart</div><div class="daily-ex-sets">3 × 15</div></div>
+
+      <div class="daily-ex" id="dp-card-pullapart">
+        <div class="daily-ex-hdr">
+          <div class="daily-ex-name">Band pull-apart</div>
+          <div class="daily-ex-sets">3 × 15</div>
+        </div>
         <div class="daily-ex-desc">Standing, blue band at chest height, arms extended. Pull band apart horizontally until hands reach sides. Squeeze shoulder blades together at end of pull. Return with control. Shoulders down and away from ears throughout.</div>
+        <button class="done-btn" id="btn-dp-pullapart" onclick="markDailyDone('pullapart')" style="margin-top:8px"><span class="tick">○</span> Mark done</button>
       </div>
-      <div class="daily-ex">
-        <div class="daily-ex-hdr"><div class="daily-ex-name">Single-leg balance</div><div class="daily-ex-sets">Right: 4 × 20 sec · Left: 3 × 20 sec</div></div>
+
+      <div class="daily-ex" id="dp-card-balance">
+        <div class="daily-ex-hdr">
+          <div class="daily-ex-name">Single-leg balance</div>
+          <div class="daily-ex-sets">Right: 4 × 20 sec · Left: 3 × 20 sec</div>
+        </div>
         <div class="daily-ex-desc">Stand near wall — within reach, not touching. Eyes open, fixed gaze on wall. Right leg gets one extra set — this is the deficit leg. Let the wobbles happen — that is the nervous system adapting.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+          <div class="form-field"><label>Right leg (sec)</label><input type="number" id="m-rbal" placeholder="e.g. 18"></div>
+          <div class="form-field"><label>Left leg (sec)</label><input type="number" id="m-lbal" placeholder="e.g. 30"></div>
+        </div>
+        <button class="done-btn" id="btn-dp-balance" onclick="markDailyDone('balance')" style="margin-top:8px"><span class="tick">○</span> Mark done</button>
       </div>
-      <div class="daily-ex">
-        <div class="daily-ex-hdr"><div class="daily-ex-name">Pelvic floor clinic routine</div><div class="daily-ex-sets">Prescribed sets</div></div>
+
+      <div class="daily-ex" id="dp-card-pf">
+        <div class="daily-ex-hdr">
+          <div class="daily-ex-name">Pelvic floor clinic routine</div>
+          <div class="daily-ex-sets">Prescribed sets</div>
+        </div>
         <div class="daily-ex-desc">Specialist clinic exercises in prescribed positions. Stack at the end of the daily protocol so it becomes one unbroken 5-minute habit.</div>
+        <button class="done-btn" id="btn-dp-pf" onclick="markDailyDone('pf')" style="margin-top:8px"><span class="tick">○</span> Mark done</button>
       </div>
+
     </div>
+  </div>
+
+  <div style="padding:16px 16px 8px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;padding:0 0 2px">
+      <div class="form-field"><label>Date</label><input type="date" id="m-date"></div>
+      <div class="form-field"><label>Week</label><select id="m-week"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+    </div>
+    <button class="save-metric-btn" style="width:100%;justify-content:center;padding:12px" onclick="saveDailyProtocol()">💾 Save today's daily protocol</button>
+    <div id="daily-save-msg" style="display:none;text-align:center;padding:8px;font-size:12px;color:var(--moss);font-weight:500">Daily protocol saved ✓</div>
+    <div style="text-align:right;margin-top:10px"><button class="clear-btn" onclick="clearAll()">🗑 Clear all data</button></div>
+  </div>
 </div>
 
 <!-- =================== PROGRESS PAGE =================== -->
@@ -839,36 +870,6 @@ canvas.chart{width:100%!important;height:120px!important}
       <div class="prog-stat"><span class="prog-stat-num" id="stat-streak">0</span><span class="prog-stat-lbl">Week streak</span><div class="prog-stat-sub" id="stat-streak-sub"></div></div>
       <div class="prog-stat"><span class="prog-stat-num" id="stat-ex">0</span><span class="prog-stat-lbl">Exercises done</span></div>
       <div class="prog-stat"><span class="prog-stat-num" id="stat-ankle">—</span><span class="prog-stat-lbl">Ankle (cm)</span><div class="prog-stat-sub">Latest</div></div>
-    </div>
-
-    <!-- LOG SESSION METRICS -->
-    <div class="metric-card">
-      <div class="metric-hdr"><h4>Log session metrics</h4><span>Saved per session</span></div>
-      <div class="metric-body">
-        <div class="session-log-form">
-          <h4>Today's measurements</h4>
-          <div class="form-row">
-            <div class="form-field"><label>Date</label><input type="date" id="m-date"></div>
-            <div class="form-field"><label>Week</label><select id="m-week"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
-          </div>
-          <div class="form-row">
-            <div class="form-field"><label>Right leg balance (sec)</label><input type="number" id="m-rbal" placeholder="e.g. 18"></div>
-            <div class="form-field"><label>Left leg balance (sec)</label><input type="number" id="m-lbal" placeholder="e.g. 30"></div>
-          </div>
-          <div class="form-row">
-            <div class="form-field"><label>Ankle stretch (cm)</label><input type="number" id="m-ankle" placeholder="cm from wall"></div>
-            <div class="form-field"><label>RPE (1–10)</label><input type="number" id="m-rpe" placeholder="e.g. 5" min="1" max="10"></div>
-          </div>
-          <div class="form-row">
-            <div class="form-field" style="flex:2"><label>Session notes</label><textarea id="m-notes" rows="2" placeholder="How did it go? Soreness, wins, flags..."></textarea></div>
-          </div>
-          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px">
-            <button class="save-metric-btn" onclick="saveMetric()">💾 Save entry</button>
-            <button class="clear-btn" onclick="clearAll()">🗑 Clear all data</button>
-          </div>
-          <div id="metric-msg" style="display:none;margin-top:8px;font-size:12px;color:var(--moss);font-weight:500">Saved ✓</div>
-        </div>
-      </div>
     </div>
 
     <!-- BALANCE CHART -->
@@ -1031,30 +1032,6 @@ function saveSession(){
   updateSummaryStats();
 }
 
-// ---- SAVE METRIC ----
-function saveMetric(){
-  const d=getData();
-  if(!d.metrics) d.metrics=[];
-  const entry={
-    date:document.getElementById('m-date').value||new Date().toISOString().split('T')[0],
-    week:document.getElementById('m-week').value,
-    rbal:parseFloat(document.getElementById('m-rbal').value)||null,
-    lbal:parseFloat(document.getElementById('m-lbal').value)||null,
-    ankle:parseFloat(document.getElementById('m-ankle').value)||null,
-    rpe:parseFloat(document.getElementById('m-rpe').value)||null,
-    notes:document.getElementById('m-notes').value
-  };
-  const existing=d.metrics.findIndex(m=>m.date===entry.date);
-  if(existing>=0) d.metrics[existing]=entry;
-  else d.metrics.push(entry);
-  d.metrics.sort((a,b)=>a.date.localeCompare(b.date));
-  setData(d);
-  const msg=document.getElementById('metric-msg');
-  msg.style.display='block';
-  setTimeout(()=>msg.style.display='none',2000);
-  renderProgress();
-}
-
 // ---- CLEAR ALL ----
 function clearAll(){
   if(confirm('Clear all progress data? This cannot be undone.')){
@@ -1211,6 +1188,57 @@ function drawLineChart(ctx,labels,datasets){
   return {destroy:function(){}};
 }
 
+// ---- DAILY PROTOCOL ----
+function markDailyDone(id){
+  const btn=document.getElementById('btn-dp-'+id);
+  const card=document.getElementById('dp-card-'+id);
+  const d=getData();
+  if(!d.done) d.done={};
+  const today=new Date().toISOString().split('T')[0];
+  const key=today+'_dp_'+id;
+  if(d.done[key]){
+    delete d.done[key];
+    btn.classList.remove('completed');
+    btn.innerHTML='<span class="tick">○</span> Mark done';
+    if(card) card.style.borderColor='';
+  } else {
+    d.done[key]=true;
+    btn.classList.add('completed');
+    btn.innerHTML='<span class="tick">✓</span> Done';
+    if(card) card.style.borderColor='var(--moss)';
+  }
+  setData(d);
+}
+
+function saveDailyProtocol(){
+  const d=getData();
+  const today=new Date().toISOString().split('T')[0];
+  const dpIds=['pullapart','balance','pf'];
+  const done=dpIds.filter(id=>d.done&&d.done[today+'_dp_'+id]);
+  if(!d.daily) d.daily=[];
+  const entry={date:today,completed:done,total:dpIds.length};
+  const existing=d.daily.findIndex(e=>e.date===today);
+  if(existing>=0) d.daily[existing]=entry;
+  else d.daily.push(entry);
+  // also save balance measurements to metrics for charts
+  const rbal=parseFloat(document.getElementById('m-rbal').value)||null;
+  const lbal=parseFloat(document.getElementById('m-lbal').value)||null;
+  const week=document.getElementById('m-week').value;
+  const ankle=parseFloat(document.getElementById('log-ad-cm')?.value)||null;
+  if(rbal||lbal||ankle){
+    if(!d.metrics) d.metrics=[];
+    const metric={date:today,week,rbal,lbal,ankle,rpe:null,notes:''};
+    const em=d.metrics.findIndex(m=>m.date===today);
+    if(em>=0) d.metrics[em]=metric;
+    else d.metrics.push(metric);
+    d.metrics.sort((a,b)=>a.date.localeCompare(b.date));
+  }
+  setData(d);
+  const msg=document.getElementById('daily-save-msg');
+  msg.style.display='block';
+  setTimeout(()=>msg.style.display='none',2000);
+}
+
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('m-date').value=new Date().toISOString().split('T')[0];
@@ -1222,7 +1250,14 @@ function restoreDoneState(){
   if(!d.done) return;
   const today=new Date().toISOString().split('T')[0];
   Object.keys(d.done).forEach(key=>{
-    if(key.startsWith(today+'_')){
+    if(key.startsWith(today+'_dp_')){
+      const id=key.replace(today+'_dp_','');
+      const btn=document.getElementById('btn-dp-'+id);
+      const card=document.getElementById('dp-card-'+id);
+      if(btn){ btn.classList.add('completed'); btn.innerHTML='<span class="tick">✓</span> Done'; }
+      if(card) card.style.borderColor='var(--moss)';
+    }
+    if(key.startsWith(today+'_') && !key.includes('_dp_')){
       const id=key.replace(today+'_','');
       const btn=document.getElementById('btn-'+id);
       const card=document.getElementById('card-'+id);
